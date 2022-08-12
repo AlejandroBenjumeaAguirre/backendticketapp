@@ -16,9 +16,9 @@ export const validarJWT = async (req: AuthRequest, res: Response, next: NextFunc
 
     try {
 
-        const userId = await jwt.verify(token, process.env.SECRETORPRIVATEKEY as string) as any;
+        const {uid} = await jwt.verify(token, process.env.SECRETORPRIVATEKEY as string) as any;
 
-        const user = await Usuario.findByPk(userId.uid) as UserInterface;
+        const user = await Usuario.findByPk(uid) as UserInterface;
 
         if(!user){
             return res.status(401).json({
