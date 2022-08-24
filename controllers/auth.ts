@@ -19,14 +19,14 @@ export const login = async(req: Request, res: Response) => {
 
         if(!usuario){
             return res.status(400).json({
-                msg: 'Usuario / Password no son correctos - correo'
+                msg: 'Usuario / Password no son correctos'
             });
         }
 
         // Verificar si el usuario esta activo
         if(!usuario.getDataValue('active')){
             return res.status(400).json({
-                msg: 'Usuario / Password no son correctos - estado'
+                msg: 'Usuario inactivo'
             });
         }
 
@@ -34,7 +34,7 @@ export const login = async(req: Request, res: Response) => {
         const validPassword = bcrypt.compareSync(password, usuario.getDataValue('password'));
         if( !validPassword){
             return res.status(400).json({
-                msg: 'Usuario / Password no son correctos - password'
+                msg: 'Usuario / Password no son correctos'
             });
         }
 
@@ -42,6 +42,7 @@ export const login = async(req: Request, res: Response) => {
         const token = await generarJWT(usuario.getDataValue('uid'));
 
         res.json({
+            ok: true,
             token,
             body: {
                 uid: usuario.getDataValue('uid'),
@@ -55,18 +56,23 @@ export const login = async(req: Request, res: Response) => {
     } catch (error) {
         console.log(error);
         return res.status(500).json({
+            ok: false,
             msg: 'Hable con el administrador'
         });
     }
 }
 
 export const revalidarToken = async( req: Request, res: Response ) => {
-    const uid = req;
+    const uid = req.usuario.getDataValue('uid');
 
-    const newtoken = await generarJWT(String(uid));
+    const usuario = await Usuario.findByPk(uid);
+
+    const token = await generarJWT(String(uid));
 
     return res.json({
-        newtoken
+        ok: true,
+        token,
+        body: usuario
     });
 
 }

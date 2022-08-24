@@ -7,6 +7,8 @@ import ticketsRoutes from '../routes/ticket';
 import authLogin from '../routes/auth';
 import uploadsRoutes from '../routes/upoloads';
 import seguimientoRoutes from '../routes/seguimiento';
+import groupRoutes from '../routes/group';
+import entityRoutes from '../routes/entity';
 import db from '../db/connection';
 
 class Server {
@@ -19,6 +21,8 @@ class Server {
         authPath: '/api/auth',
         uploads: '/api/uploads',
         seguimientos: '/api/seg',
+        group: '/api/group',
+        entity: '/api/entity'
     }
 
     constructor() {
@@ -69,7 +73,9 @@ class Server {
         this.app.use( this.apiPath.usuarios, userRoutes),
         this.app.use( this.apiPath.tickets, ticketsRoutes),
         this.app.use( this.apiPath.uploads, uploadsRoutes ),
-        this.app.use( this.apiPath.seguimientos, seguimientoRoutes )
+        this.app.use( this.apiPath.seguimientos, seguimientoRoutes ),
+        this.app.use( this.apiPath.group, groupRoutes),
+        this.app.use( this.apiPath.entity, entityRoutes)
     }
 
     listen(){

@@ -42,18 +42,6 @@ export const postUsuario = async ( req: Request, res: Response ) => {
 
     try {
 
-        /* const existeEmail = await Usuario.findOne({
-            where: {
-                email: body.email
-            }
-        });
-
-        if(existeEmail){
-            return res.status(400).json({
-                msg: "Ya existe un usuario con el Email " + body.email
-            });
-        } */
-
         // Encriptacion de la contraseña
         const salt = bcrypt.genSaltSync();
         body.password = bcrypt.hashSync( body.password, salt );
@@ -61,9 +49,8 @@ export const postUsuario = async ( req: Request, res: Response ) => {
         const usuario = Usuario.build(body);
         await usuario.save();
 
-        /* usuario.getDataValue('password'); */
-
         res.json({
+            ok: true,
             msg: 'Usuario creado con exito',
             body: {
                 id: usuario.getDataValue('id'),
@@ -119,6 +106,7 @@ export const putUsuario = async ( req: Request, res: Response ) => {
         await usuario.update( body );
 
         res.json({
+            ok: true,
             msg: `Usuario ${id} actualizado`,
             body: {
                 id: usuario.getDataValue('id'),
@@ -153,6 +141,7 @@ export const deleteUsuario = async( req: Request, res: Response ) => {
     await usuario.update({ active: false });
 
     res.json({
+        ok: true,
         msg: `Usuario ${id} eliminado`,
         body: {
             id: usuario.getDataValue('id'),

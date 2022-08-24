@@ -89,3 +89,15 @@ export const esSucesoCierreValid = async(id='') => {
         throw new Error(`El evento de cierre con codigo ${id} no existe`);
     }
 }
+
+export const nicknameYaExiste = async(nickname = '') => {
+    const nicknameExist = await Usuario.findOne({
+        where: {
+            nickname
+        }
+    });
+
+    if(nicknameExist){
+        throw new Error("Ya existe un usuario con el nickname " + nickname);
+    }
+}

@@ -11,7 +11,7 @@ import {
             deleteUsuario
 } from '../controllers/usuarios';
 
-import { esGrupoValido, esEntidadValida, emailExiste } from '../helpers/db-validators';
+import { esGrupoValido, esEntidadValida, emailExiste, nicknameYaExiste } from '../helpers/db-validators';
 
 const router = Router();
 
@@ -24,12 +24,13 @@ router.post('/', [
     check('name', 'El nombre es requerido').not().isEmpty(),
     check('email', 'El correo no es valido').isEmail(),
     check('phone', 'El telefono debe ser numerico').isNumeric(),
-    check('nickname', 'El campo nickname es requerido').not().isEmpty(),
+    check('nickname', 'El campo nickname es requerido y debe de ser inferiror a 20 caracteres').not().isEmpty().isLength({max:20}),
     check('active', 'El campo debe ser boolean').isBoolean(),
     check('password', 'El password debe de ser minimo 6 letras').isLength({min:6}),
     check('group_id').custom( esGrupoValido ),
     check('entity_id').custom( esEntidadValida ),
     check('email').custom( emailExiste ),
+    check('nickname').custom( nicknameYaExiste ),
     validarCampos], postUsuario );
 
 router.put('/:id', [
