@@ -9,4 +9,4 @@ npm install
 
 tsc --watch
 
-nodemon dist/app.js
+npm run dev
