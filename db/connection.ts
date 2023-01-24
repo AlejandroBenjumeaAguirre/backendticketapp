@@ -1,8 +1,10 @@
 import { Sequelize } from 'sequelize';
+require('dotenv').config();
 
 
-const db = new Sequelize('ticketapp', 'postgres', 'AB120792', {
-    host: 'localhost',
+
+const db = new Sequelize(process.env.DB, 'postgres', process.env.PASSWORDDB, {
+    host: process.env.HOST,
     dialect: 'postgres',
     // logging: false
     /* define:{
