@@ -3,7 +3,9 @@ Backend de aplicación de tickets con nodejs, express, sequelize y typescript
 
 # Ejecutar
 
-npm install
+``` npm instal ```
+
+Se debe de ejecutar este comando para instalar todos los paquetes necesarios para poder desarrollar.
 
 # Crear archivo .env
 
@@ -16,11 +18,15 @@ PASSWORDDB = contraseña de la base de datos.
 
 # Ejecutar para Crear la carpeta dist.
 
-tsc --watch
+``` npm run tsc ```
+
+Se debe de ejecutar para crear el proyecto en js y de esta manera subir la carpeta dist
 
 # Ejecutar para ponerlo a correr en modo desarrollo
 
-npm run dev
+``` npm run dev ```
+
+Se debe de ejecutar para que se ejecute en modo desarrollo
 
 # Ejecutar para ponerlo a correr en modo producción
 
