@@ -1,9 +1,7 @@
 import { Sequelize } from 'sequelize';
-require('dotenv').config();
 
 
-
-const db = new Sequelize(process.env.DB, 'postgres', process.env.PASSWORDDB, {
+const db = new Sequelize(process.env.DB_NAME || '', 'postgres', process.env.DB_PASSWORD, {
     host: process.env.HOST,
     dialect: 'postgres',
     // logging: false
