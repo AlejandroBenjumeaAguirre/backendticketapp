@@ -3,9 +3,7 @@ import { check } from 'express-validator';
 import { deleteSeg, getSegPorTicket, postSeg, putSeg } from '../controllers/seguimiento';
 
 
-import { esEntidadValida,
-         esEvent1Valid,
-         esStateValid,
+import { esEvent1Valid,
          esUserValid,
          esEvent2Valid,
          esEvent3Valid,

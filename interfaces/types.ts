@@ -5,6 +5,7 @@ import fileUpload from 'express-fileupload';
 export type UploadedFile = fileUpload.UploadedFile;
 
 export interface Usuario {
+    getDataValue(arg0: string): any;
     id?: number;
     name?: string;
     group_id?: number;
@@ -14,6 +15,7 @@ export interface Usuario {
     nickname?: string;
     active?: boolean;
     password?: string;
+
   }
 
   export interface AuthRequest extends Request {

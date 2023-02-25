@@ -7,18 +7,22 @@ import subirArchivo from '../helpers/subir-archivo';
 const cargarArchivo = async(req: Request, res: Response) => {
 
     if (!req.files || Object.keys(req.files).length === 0 || !req.files.archivo) {
-        res.status(400).json('No hay archivos en la petición');
-        return;
+        return res.status(400).json({
+            ok: false,
+            msg: 'No hay archivos en la petición'
+        });
     }
 
     try {
         const nombre = await subirArchivo(req.files, ['txt', 'docx']);
 
-        res.json({
+        return res.json({
+            ok: true,
             nombre
         });
     } catch (error) {
-        res.status(400).json({
+        return res.status(400).json({
+            ok: false,
             error
         })
     }

@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { AuthRequest } from "../interfaces/types";
 
 
@@ -6,6 +6,7 @@ export const esGroupAdmin = (req: AuthRequest, res: Response, next: NextFunction
 
     if(!req.usuario){
         return res.status(500).json({
+            ok: false,
             msg: 'Se quiere verificar el grupo sin validar el token primero'
         });
     }
@@ -19,7 +20,7 @@ export const esGroupAdmin = (req: AuthRequest, res: Response, next: NextFunction
         });
     }
 
-    next();
+    return next();
 }
 
 export const tieneGroup = ( ...groups: number[] ) => {
@@ -40,6 +41,6 @@ export const tieneGroup = ( ...groups: number[] ) => {
             }
         }
 
-        next();
+        return next();
     }
 }

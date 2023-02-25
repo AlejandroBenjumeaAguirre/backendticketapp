@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import Usuario from '../models/usuario';
 import bcrypt from 'bcryptjs';
 import { generarJWT } from '../helpers/generar-jwt';
+import { AuthRequest } from "../interfaces/types";
 
 
 export const login = async(req: Request, res: Response) => {
@@ -19,6 +20,7 @@ export const login = async(req: Request, res: Response) => {
 
         if(!usuario){
             return res.status(400).json({
+                ok: false,
                 msg: 'Usuario / Password no son correctos'
             });
         }
@@ -26,6 +28,7 @@ export const login = async(req: Request, res: Response) => {
         // Verificar si el usuario esta activo
         if(!usuario.getDataValue('active')){
             return res.status(400).json({
+                ok: false,
                 msg: 'Usuario inactivo'
             });
         }
@@ -34,6 +37,7 @@ export const login = async(req: Request, res: Response) => {
         const validPassword = bcrypt.compareSync(password, usuario.getDataValue('password'));
         if( !validPassword){
             return res.status(400).json({
+                ok: false,
                 msg: 'Usuario / Password no son correctos'
             });
         }
@@ -41,7 +45,7 @@ export const login = async(req: Request, res: Response) => {
         // Generar JWT
         const token = await generarJWT(usuario.getDataValue('uid'));
 
-        res.json({
+        return res.json({
             ok: true,
             token,
             body: {
@@ -62,7 +66,7 @@ export const login = async(req: Request, res: Response) => {
     }
 }
 
-export const revalidarToken = async( req: Request, res: Response ) => {
+export const revalidarToken = async( req: AuthRequest, res: Response ) => {
     const uid = req.usuario.getDataValue('uid');
 
     const usuario = await Usuario.findByPk(uid);

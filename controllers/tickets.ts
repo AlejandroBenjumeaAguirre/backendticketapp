@@ -4,11 +4,14 @@ import Ticket from '../models/ticket';
 
 
 
-export const getTickets = async( req: Request, res: Response ) => {
+export const getTickets = async( res: Response ) => {
 
     const tickets = await Ticket.findAll();
 
-    res.json(tickets);
+    return res.status(200).json({
+        ok: true,
+        tickets
+    });
 
 }
 
@@ -23,7 +26,10 @@ export const getTicketsPorUser = async( req: Request, res: Response ) => {
         }
     });
 
-    res.json(tickets);
+    return res.status(200).json({
+        ok: true,
+        tickets
+    });
 
 }
 
@@ -41,7 +47,10 @@ export const getTicketsPorGroup = async( req: Request, res: Response ) => {
         }
     })
 
-    res.json(tickets);
+    return res.json({
+        ok: true,
+        tickets
+    });
 
 }
 
@@ -53,9 +62,13 @@ export const getTicket = async ( req: Request, res: Response ) => {
     const ticket = await Ticket.findByPk( id );
 
     if(ticket){
-        res.json(ticket);
+        return res.status(200).json({
+            ok: true,
+            ticket
+        });
     }else{
-        res.status(404).json({
+        return res.status(404).json({
+            ok: false,
             msg: `No existe ticket con el id: ${id}`
         });
     }
@@ -71,11 +84,15 @@ export const postTicket = async ( req: Request, res: Response ) => {
         const ticket = Ticket.build(body);
         await ticket.save();
 
-        res.json(ticket);
+        return res.status(200).json({
+            ok: true,
+            ticket
+        });
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({
+        return res.status(500).json({
+            ok: false,
             msg: 'Hable con el administrador'
         })
     }
@@ -92,19 +109,22 @@ export const putTicket = async ( req: Request, res: Response ) => {
 
         if(!ticket){
             return res.status(404).json({
+                ok: false,
                 msg: 'No existe ticket con el id ' + id
             });
         }
 
         await ticket.update({ state_id: 3 });
 
-        res.json({
+        return res.status(200).json({
+            ok: true,
             msg: `Ticket ${id} en espera`,
         })
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({
+        return res.status(500).json({
+            ok: false,
             msg: 'Hable con el administrador'
         })
     }
@@ -119,6 +139,7 @@ export const deleteTicket = async( req: Request, res: Response ) => {
 
     if(!ticket){
         return res.status(404).json({
+            ok: false,
             msg: 'No existe un usuario con el id: ' + id
         });
     }
@@ -127,6 +148,9 @@ export const deleteTicket = async( req: Request, res: Response ) => {
 
     await ticket.update({ closing_date: fecha, state_id: 2 } );
 
-    res.json(ticket);
+    return res.status(200).json({
+        ok: true,
+        ticket
+    });
 
 }

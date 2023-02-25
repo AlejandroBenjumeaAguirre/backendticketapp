@@ -1,4 +1,4 @@
-import { Model, DataTypes, Sequelize, NOW } from 'sequelize';
+import { DataTypes } from 'sequelize';
 import db from '../db/connection';
 import { Usuario } from '../interfaces/types';
 

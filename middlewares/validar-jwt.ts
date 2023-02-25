@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { AuthRequest, Usuario as UserInterface } from '../interfaces/types';
 
@@ -35,7 +35,8 @@ export const validarJWT = async (req: AuthRequest, res: Response, next: NextFunc
 
         req.usuario = user as UserInterface;
 
-        next();
+        return next();
+
     } catch (error) {
         console.log(error);
         return res.status(401).json({

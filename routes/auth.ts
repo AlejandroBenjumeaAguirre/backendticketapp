@@ -16,7 +16,7 @@ login);
 
 router.get('/renew', [
     validarJWT as any
-], revalidarToken);
+], revalidarToken as any);
 
 
 export default router;

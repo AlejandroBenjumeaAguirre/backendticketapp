@@ -14,7 +14,8 @@ export const getUsuarios = async( req: Request, res: Response ) => {
         limit: Number(limite)
     });
 
-    res.json({
+    return res.json({
+        ok: true,
         usuarios
     });
 
@@ -27,9 +28,13 @@ export const getUsuario = async ( req: Request, res: Response ) => {
     const usuario = await Usuario.findByPk( id );
 
     if(usuario){
-        res.json(usuario);
+        return res.status(200).json({
+            ok: true,
+            usuario
+        });
     }else{
-        res.status(404).json({
+        return res.status(404).json({
+            ok: false,
             msg: `No existe un usario con el id: ${id}`
         });
     }
@@ -49,7 +54,7 @@ export const postUsuario = async ( req: Request, res: Response ) => {
         const usuario = Usuario.build(body);
         await usuario.save();
 
-        res.json({
+        return res.json({
             ok: true,
             msg: 'Usuario creado con exito',
             body: {
@@ -63,7 +68,8 @@ export const postUsuario = async ( req: Request, res: Response ) => {
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({
+        return res.status(500).json({
+            ok: false,
             msg: 'Hable con el administrador'
         })
     }
@@ -87,6 +93,7 @@ export const putUsuario = async ( req: Request, res: Response ) => {
 
         if(!usuario){
             return res.status(404).json({
+                ok: false,
                 msg: 'No existe un usuario con el id ' + id
             });
         }
@@ -105,7 +112,7 @@ export const putUsuario = async ( req: Request, res: Response ) => {
 
         await usuario.update( body );
 
-        res.json({
+        return res.json({
             ok: true,
             msg: `Usuario ${id} actualizado`,
             body: {
@@ -119,7 +126,8 @@ export const putUsuario = async ( req: Request, res: Response ) => {
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({
+        return res.status(500).json({
+            ok: false,
             msg: 'Hable con el administrador'
         })
     }
@@ -134,13 +142,14 @@ export const deleteUsuario = async( req: Request, res: Response ) => {
 
     if(!usuario){
         return res.status(404).json({
+            ok: false,
             msg: 'No existe un usuario con el id: ' + id
         });
     }
 
     await usuario.update({ active: false });
 
-    res.json({
+    return res.json({
         ok: true,
         msg: `Usuario ${id} eliminado`,
         body: {

@@ -53,19 +53,22 @@ export const putSeg = async ( req: Request, res: Response ) => {
 
         if(!seguimiento){
             return res.status(404).json({
+                ok: false,
                 msg: 'No existe ticket con el id ' + id
             });
         }
 
         await seguimiento.update({ on_hold: true });
 
-        res.json({
+        return res.json({
+            ok: false,
             msg: `seguimiento ${id} en espera`,
         })
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({
+        return res.status(500).json({
+            ok: false,
             msg: 'Hable con el administrador'
         })
     }
@@ -80,6 +83,7 @@ export const deleteSeg = async( req: Request, res: Response ) => {
 
     if(!seguimiento){
         return res.status(404).json({
+            ok: false,
             msg: 'No existe un usuario con el id: ' + id
         });
     }
@@ -88,6 +92,9 @@ export const deleteSeg = async( req: Request, res: Response ) => {
 
     await seguimiento.update({ closing_date: fecha, state_id: 2 } );
 
-    res.json(seguimiento);
+    return res.status(200).json({
+        ok: true,
+        seguimiento
+    });
 
 }
